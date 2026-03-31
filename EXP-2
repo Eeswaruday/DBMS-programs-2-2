@@ -1,0 +1,73 @@
+-- 1. CREATE TABLE with constraints
+CREATE TABLE Students (
+    RollNo INT PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    Marks INT CHECK (Marks >= 0)
+);
+
+-- 2. INSERT DATA
+INSERT INTO Students VALUES
+(1, 'Ravi', 95),
+(2, 'Sita', 88),
+(3, 'Arjun', 92),
+(4, 'Kiran', 85),
+(5, 'Meena', 80);
+
+-- 3. SELECT all data
+SELECT * FROM Students;
+
+--------------------------------------------------
+-- 4. SUBQUERY Example (4th Rank Student)
+SELECT RollNo, Name
+FROM Students
+WHERE Marks = (
+    SELECT DISTINCT Marks
+    FROM Students
+    ORDER BY Marks DESC
+    LIMIT 1 OFFSET 3
+);
+
+--------------------------------------------------
+-- 5. IN operator
+SELECT Name FROM Students
+WHERE Marks IN (95, 88);
+
+--------------------------------------------------
+-- 6. ANY operator
+SELECT Name FROM Students
+WHERE Marks > ANY (SELECT Marks FROM Students WHERE Marks < 90);
+
+--------------------------------------------------
+-- 7. ALL operator
+SELECT Name FROM Students
+WHERE Marks > ALL (SELECT Marks FROM Students WHERE Marks < 90);
+
+--------------------------------------------------
+-- 8. EXISTS
+SELECT Name FROM Students S
+WHERE EXISTS (
+    SELECT *
+    FROM Students
+    WHERE Marks > 90 AND S.RollNo = Students.RollNo
+);
+
+--------------------------------------------------
+-- 9. NOT EXISTS
+SELECT Name FROM Students S
+WHERE NOT EXISTS (
+    SELECT *
+    FROM Students
+    WHERE Marks > 90 AND S.RollNo = Students.RollNo
+);
+
+--------------------------------------------------
+-- 10. UNION
+SELECT Name FROM Students WHERE Marks > 90
+UNION
+SELECT Name FROM Students WHERE Marks < 85;
+
+--------------------------------------------------
+-- 11. INTERSECT (supported in some DBs like PostgreSQL)
+SELECT Name FROM Students WHERE Marks > 80
+INTERSECT
+SELECT Name FROM Students WHERE Marks < 95;
