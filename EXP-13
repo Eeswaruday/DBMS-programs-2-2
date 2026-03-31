@@ -1,0 +1,39 @@
+-- 1. CREATE TABLE
+CREATE TABLE Students (
+    RollNo INT PRIMARY KEY,
+    Name VARCHAR2(50),
+    Marks INT
+);
+
+-- 2. INSERT DATA
+INSERT INTO Students VALUES (1, 'Ravi', 70);
+INSERT INTO Students VALUES (2, 'Sita', 85);
+INSERT INTO Students VALUES (3, 'Arjun', 60);
+
+COMMIT;
+
+--------------------------------------------------
+-- 3. SELECT DATA (like JDBC fetch)
+
+SELECT * FROM Students;
+
+--------------------------------------------------
+-- 4. SELECT WITH CONDITION
+
+SELECT * FROM Students
+WHERE Marks > 70;
+
+--------------------------------------------------
+-- 5. UPDATE DATA
+
+UPDATE Students
+SET Marks = 80
+WHERE RollNo = 1;
+
+--------------------------------------------------
+-- 6. DELETE DATA
+
+DELETE FROM Students
+WHERE RollNo = 3;
+
+COMMIT;
