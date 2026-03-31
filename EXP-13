@@ -1,39 +1,41 @@
--- 1. CREATE TABLE
-CREATE TABLE Students (
-    RollNo INT PRIMARY KEY,
-    Name VARCHAR2(50),
-    Marks INT
-);
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.sql.ResultSet;
 
--- 2. INSERT DATA
-INSERT INTO Students VALUES (1, 'Ravi', 70);
-INSERT INTO Students VALUES (2, 'Sita', 85);
-INSERT INTO Students VALUES (3, 'Arjun', 60);
+public class JDBCExample {
+    public static void main(String[] args) {
+        try {
+            // 1. Load Driver
+            Class.forName("oracle.jdbc.driver.OracleDriver");
 
-COMMIT;
+            // 2. Establish Connection
+            Connection con = DriverManager.getConnection(
+                "jdbc:oracle:thin:@localhost:1521:xe",
+                "system",
+                "password"
+            );
 
---------------------------------------------------
--- 3. SELECT DATA (like JDBC fetch)
+            // 3. Create Statement
+            Statement stmt = con.createStatement();
 
-SELECT * FROM Students;
+            // 4. Execute Query
+            ResultSet rs = stmt.executeQuery("SELECT * FROM Students");
 
---------------------------------------------------
--- 4. SELECT WITH CONDITION
+            // 5. Process Result
+            while (rs.next()) {
+                System.out.println(
+                    rs.getInt(1) + " " +
+                    rs.getString(2) + " " +
+                    rs.getInt(3)
+                );
+            }
 
-SELECT * FROM Students
-WHERE Marks > 70;
+            // 6. Close Connection
+            con.close();
 
---------------------------------------------------
--- 5. UPDATE DATA
-
-UPDATE Students
-SET Marks = 80
-WHERE RollNo = 1;
-
---------------------------------------------------
--- 6. DELETE DATA
-
-DELETE FROM Students
-WHERE RollNo = 3;
-
-COMMIT;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
