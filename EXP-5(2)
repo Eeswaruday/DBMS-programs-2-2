@@ -1,0 +1,37 @@
+-- 1. CREATE TABLE
+CREATE TABLE Students (
+    RollNo INT PRIMARY KEY,
+    Name VARCHAR2(50),
+    Marks INT
+);
+
+--------------------------------------------------
+-- 2. PL/SQL BLOCK
+
+BEGIN
+    -- Insert first record
+    INSERT INTO Students VALUES (1, 'Ravi', 80);
+
+    -- Savepoint A
+    SAVEPOINT A;
+
+    -- Insert second record
+    INSERT INTO Students VALUES (2, 'Sita', 85);
+
+    -- Savepoint B
+    SAVEPOINT B;
+
+    -- Insert third record
+    INSERT INTO Students VALUES (3, 'Arjun', 70);
+
+    -- Rollback to Savepoint B (removes Arjun)
+    ROLLBACK TO B;
+
+    -- Insert new record
+    INSERT INTO Students VALUES (4, 'Kiran', 90);
+
+    -- Commit all changes
+    COMMIT;
+
+END;
+/
